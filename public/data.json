@@ -3,29 +3,19 @@
   "colors": [
     [
       "blue",
-      "purple",
-      "yellow",
-      "orange"
-    ],
-    [
-      "orange",
-      "yellow"
-    ],
-    [
       "blue",
-      "purple",
-      "blue"
-    ],
-    [
-      "yellow",
-      "orange",
+      "blue",
       "purple"
     ],
     [
       "purple",
-      "orange",
-      "yellow",
+      "purple",
+      "purple",
       "blue"
+    ],
+    [
+    ],
+    [
     ]
   ]
 }

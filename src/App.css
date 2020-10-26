@@ -11,9 +11,14 @@ body,
   justify-content: center;
 }
 
-.btn-selected {
+.btn-widget {
   position: fixed;
-  top: 100px
+  top: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  margin-bottom: 25px;
 }
 
 .you-won {
@@ -24,6 +29,7 @@ body,
   display: flex;
   align-items: flex-end;
   justify-content: center;
+  margin-top: 250px;
 }
 
 .btn-container {

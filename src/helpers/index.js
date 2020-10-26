@@ -1,6 +1,7 @@
+import {useEffect, useRef} from "react";
+
 export const generateRenderData = (data, maxCount) => {
   const clonedData = copyArray(data);
-
   return clonedData.map(colors => {
     if (colors.length < maxCount) {
       while (colors.length !== maxCount) colors.push('');
@@ -12,4 +13,12 @@ export const generateRenderData = (data, maxCount) => {
 
 export const copyArray = (arr) => {
   return arr.map(value => [...value])
+}
+
+export const usePrevious = (value) => {
+  const ref = useRef();
+  useEffect(() => {
+    ref.current = value;
+  });
+  return ref.current;
 }

@@ -1,91 +1,112 @@
-import React from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import Btn from "../Btn";
-import {copyArray, generateRenderData} from "../../helpers";
+import {copyArray, generateRenderData, usePrevious} from "../../helpers";
+import BtnWidget from "../BtnWidget";
 
-class BtnContainer extends React.PureComponent {
-  constructor() {
-    super();
+const BtnContainer = (props) => {
 
-    this.state = {
-      colors: [],
-      selectedColor: '',
-    }
-  }
+    const [selectedColor, setSelectedColor] = useState('');
+    const [originColors, setOriginColors] = useState([]);
+    const [score, setScore] = useState(0);
 
-  async componentDidMount() {
-    const response = await fetch('data.json');
-    const data = await response.json();
+    const prevSelectedColor = usePrevious(selectedColor);
+    const prevOriginColors = usePrevious(originColors);
 
-    this.MAX_COUNT = data.maxCount;
-    this.setState({colors: data.colors});
-  }
+    const mounted = useRef();
+    const MAX_COUNT = useRef();
 
-  handleClick = (index) => {
-    const colors = copyArray(this.state.colors);
-    const clickedColorsArray = colors[index];
-    const clickedColor = clickedColorsArray[clickedColorsArray.length - 1];
+    useEffect(() => {
+        if (!mounted.current) {
+            // do componentDidMount logic
+            async function fetchData() {
+                const response = await fetch('data.json');
+                const data = await response.json();
 
-    if (!this.state.selectedColor) {
-      clickedColorsArray.pop();
-      this.setState({
-        selectedColor: clickedColor,
-        colors,
-      });
+                MAX_COUNT.current = data.maxCount;
+                setOriginColors(data.colors);
 
-      return;
-    }
+                mounted.current = true;
+            }
 
-    if (clickedColorsArray.length < this.MAX_COUNT && (!clickedColor || this.state.selectedColor === clickedColor)) {
-      clickedColorsArray.push(this.state.selectedColor);
-      this.setState({
-        selectedColor: '',
-        colors
-      });
-    }
-  }
+            fetchData();
+        } else {
+            // do componentDidUpdate logic
 
-  componentDidUpdate(prevProps, prevState) {
-    if (prevState.selectedColor !== this.state.selectedColor) {
-      let status = true;
+            if (prevSelectedColor !== selectedColor) {
+                let status = true;
 
-      this.state.colors.forEach((colors) => {
-        if (colors.length) {
-          if (colors.length === this.MAX_COUNT) {
-            const uniqueObj = new Set();
-            colors.forEach((color) => uniqueObj.add(color));
-            if (uniqueObj.size !== 1) status = false;
-            return;
-          }
+                originColors.forEach((colors) => {
+                    console.log(colors);
+                    if (colors.length) {
+                        if (colors.length === MAX_COUNT.current) {
+                            const uniqueObj = new Set();
+                            colors.forEach((color) => uniqueObj.add(color));
+                            if (uniqueObj.size !== 1) status = false;
+                            return;
+                        }
 
-          status = false;
+                        status = false;
+                    }
+                })
+
+                if (status) {
+                    props.setScore(score);
+                    props.setFinished();
+                }
+            }
         }
-      })
+    });
 
-      if (status) {
-        this.props.setFinished();
-      }
+    const handleClick = (index) => {
+        const colors = copyArray(originColors);
+        const clickedColorsArray = colors[index];
+        const clickedColor = clickedColorsArray[clickedColorsArray.length - 1];
+
+        if (!selectedColor) {
+            clickedColorsArray.pop();
+            setSelectedColor(clickedColor);
+            setOriginColors(colors);
+            setScore(score + 1);
+            return;
+        }
+
+        if (clickedColorsArray.length < MAX_COUNT.current && (!clickedColor || selectedColor === clickedColor)) {
+            clickedColorsArray.push(selectedColor);
+            setSelectedColor('');
+            setOriginColors(colors);
+        }
     }
-  }
 
-  render() {
-    const colors = generateRenderData(this.state.colors, this.MAX_COUNT);
+    const handleUndo = () => {
+        if (score !== 0) {
+            setOriginColors(prevOriginColors);
+            setSelectedColor(prevSelectedColor);
+            setScore(score + 1);
+        }
+    };
+
+    // render
+
+    const colors = generateRenderData(originColors, MAX_COUNT.current);
 
     return (
-      <>
-        <Btn color={this.state.selectedColor} className="btn-selected"/>
+        <>
+            {/*<Btn color={selectedColor} onClick={() => handleUndo()} className="btn-selected"/>*/}
+            <BtnWidget color={selectedColor} onClick={() => handleUndo()} className="btn-selected" score={score} />
 
-        <div className="game-container">
-          {colors.map((colors, i) => (
-            <div key={i} className="btn-container" onClick={() => this.handleClick(i)}>
-              {colors.map((color, j) => (
-                <Btn key={j} color={color}/>
-              ))}
+            <div className="game-container">
+                {colors.map((colors, i) => (
+                    <div key={i} className="btn-container" onClick={() => handleClick(i)}>
+                        {colors.map((color, j) => (
+                            <Btn key={j} color={color}/>
+                        ))}
+                    </div>
+                ))}
             </div>
-          ))}
-        </div>
-      </>
+
+
+        </>
     )
-  }
 }
 
 export default BtnContainer;

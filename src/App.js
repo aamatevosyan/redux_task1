@@ -1,40 +1,29 @@
-import React from 'react';
+import React, {useState} from 'react';
 import './App.css';
 import BtnContainer from "./components/BtnContainer";
+import WonWidget from "./components/WonWidget";
 
-class App extends React.Component {
-  constructor() {
-    super();
+const App = (props) => {
+  const [finished, setFinished] = useState(false);
+  const [score, setScore] = useState(0);
 
-    this.state = {
-      finished: false
-    }
+  const handlePlayAgain = () => {
+    setFinished(false);
   }
 
-  handlePlayAgain = () => {
-    this.setState({
-      finished: false,
-    })
+  const handleSetFinished = () => {
+    setFinished(true);
   }
 
-  handleSetFinished = () => {
-    this.setState({finished: true})
-  }
-
-  render() {
-    return (
+  return (
       <div className="App">
-        {this.state.finished ? (
-          <>
-            <h1 className="you-won">You Won ! </h1>
-            <button onClick={this.handlePlayAgain}>Play Again</button>
-          </>
+        {finished ? (
+            <WonWidget handlePlayAgain={handlePlayAgain} score={score}/>
         ) : (
-          <BtnContainer setFinished={this.handleSetFinished}/>
+            <BtnContainer setFinished={handleSetFinished} setScore={setScore}/>
         )}
       </div>
-    )
-  }
+  )
 }
 
 export default App;
