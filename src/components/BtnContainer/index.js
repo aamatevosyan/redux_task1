@@ -36,7 +36,6 @@ const BtnContainer = (props) => {
                 let status = true;
 
                 originColors.forEach((colors) => {
-                    console.log(colors);
                     if (colors.length) {
                         if (colors.length === MAX_COUNT.current) {
                             const uniqueObj = new Set();
@@ -44,13 +43,12 @@ const BtnContainer = (props) => {
                             if (uniqueObj.size !== 1) status = false;
                             return;
                         }
-
                         status = false;
                     }
                 })
 
                 if (status) {
-                    props.setScore(score);
+                    props.score.current = score;
                     props.setFinished();
                 }
             }
@@ -91,8 +89,7 @@ const BtnContainer = (props) => {
 
     return (
         <>
-            {/*<Btn color={selectedColor} onClick={() => handleUndo()} className="btn-selected"/>*/}
-            <BtnWidget color={selectedColor} onClick={() => handleUndo()} className="btn-selected" score={score} />
+            <BtnWidget color={selectedColor} onClick={() => handleUndo()} className="btn-selected" score={score}/>
 
             <div className="game-container">
                 {colors.map((colors, i) => (
@@ -103,8 +100,6 @@ const BtnContainer = (props) => {
                     </div>
                 ))}
             </div>
-
-
         </>
     )
 }

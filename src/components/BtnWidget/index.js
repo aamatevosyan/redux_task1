@@ -1,5 +1,5 @@
 import Btn from "../Btn";
-import React  from 'react';
+import React from 'react';
 
 const BtnWidget = (props) => {
     return (
