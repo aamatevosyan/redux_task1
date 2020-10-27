@@ -2,26 +2,26 @@
   "maxCount": 4,
   "colors": [
     [
-      "blue",
-      "purple",
-      "orange"
+      "#28abb9",
+      "#e97171",
+      "#a8dda8"
     ],
     [
-      "orange"
+      "#a8dda8"
     ],
     [
-      "blue",
-      "purple",
-      "blue"
+      "#28abb9",
+      "#e97171",
+      "#28abb9"
     ],
     [
-      "orange",
-      "purple"
+      "#a8dda8",
+      "#e97171"
     ],
     [
-      "purple",
-      "orange",
-      "blue"
+      "#e97171",
+      "#a8dda8",
+      "#28abb9"
     ]
   ]
 }
