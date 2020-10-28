@@ -9,6 +9,7 @@ body,
     display: flex;
     align-items: center;
     justify-content: center;
+    background-color: #f6f5f5;
 }
 
 .step-title {
@@ -35,6 +36,11 @@ body,
     align-items: flex-end;
     justify-content: center;
     margin-top: 250px;
+    border: 3px solid;
+    border-radius: 5px;
+    padding: 25px;
+    box-shadow: 10px 10px 25px 0px rgba(0,0,0,0.5);
+    background-color: #d9e4dd;
 }
 
 .btn-container {
@@ -49,7 +55,8 @@ body,
 .btn {
     height: 100px;
     width: 100px;
-    border: 1px solid;
+    border: 3px solid;
     border-radius: 5px;
     margin: 3px;
+    background-color: #fbf7f0;
 }

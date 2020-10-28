@@ -1,29 +1,33 @@
-import React, {useRef, useState} from 'react';
+import React from 'react';
 import './App.css';
 import BtnContainer from "./components/BtnContainer";
 import WonWidget from "./components/WonWidget";
+import {connect} from "react-redux";
+import {setFinished} from "./actions";
 
-const App = (props) => {
-    const [finished, setFinished] = useState(false);
-    const score = useRef(0);
-
-    const handlePlayAgain = () => {
-        setFinished(false);
-    }
-
-    const handleSetFinished = () => {
-        setFinished(true);
-    }
-
+const App = ({finished, setFinished, score}) => {
     return (
         <div className="App">
             {finished ? (
-                <WonWidget handlePlayAgain={handlePlayAgain} score={score.current}/>
+                <WonWidget handlePlayAgain={() => setFinished(false)} score={score}/>
             ) : (
-                <BtnContainer setFinished={handleSetFinished} score={score}/>
+                <BtnContainer setFinished={() => setFinished(true)}/>
             )}
         </div>
     )
 }
 
-export default App;
+const mapStateToProps = (state) => {
+    return {
+        finished: state.finished,
+        score: state.score
+    };
+};
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        setFinished: (value) => dispatch(setFinished(value))
+    };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);

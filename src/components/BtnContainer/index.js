@@ -1,19 +1,17 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useEffect, useRef} from 'react';
 import Btn from "../Btn";
 import {copyArray, generateRenderData, usePrevious} from "../../helpers";
 import BtnWidget from "../BtnWidget";
+import {connect} from "react-redux";
+import {setOriginColors, setSelectedColor, setScore} from "../../actions";
 
-const BtnContainer = (props) => {
-
-    const [selectedColor, setSelectedColor] = useState('');
-    const [originColors, setOriginColors] = useState([]);
-    const [score, setScore] = useState(0);
+const BtnContainer = ({selectedColor, setSelectedColor, originColors, setOriginColors, score, setScore, setFinished}) => {
 
     const prevSelectedColor = usePrevious(selectedColor);
     const prevOriginColors = usePrevious(originColors);
 
-    const mounted = useRef();
     const MAX_COUNT = useRef();
+    const mounted = useRef(false);
 
     useEffect(() => {
         if (!mounted.current) {
@@ -48,8 +46,7 @@ const BtnContainer = (props) => {
                 })
 
                 if (status) {
-                    props.score.current = score;
-                    props.setFinished();
+                    setFinished();
                 }
             }
         }
@@ -104,4 +101,20 @@ const BtnContainer = (props) => {
     )
 }
 
-export default BtnContainer;
+const mapStateToProps = (state) => {
+    return {
+        selectedColor: state.selectedColor,
+        originColors: state.originColors,
+        score: state.score
+    };
+};
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        setSelectedColor: (value) => dispatch(setSelectedColor(value)),
+        setOriginColors: (value) => dispatch(setOriginColors(value)),
+        setScore: (value) => dispatch(setScore(value))
+    };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(BtnContainer);
