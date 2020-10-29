@@ -4,6 +4,7 @@ import {copyArray, generateRenderData, usePrevious} from "../../helpers";
 import BtnWidget from "../BtnWidget";
 import {connect} from "react-redux";
 import {setOriginColors, setSelectedColor, incrementScore} from "../../actions";
+import {bloopAudio} from "../../helpers/index";
 
 const BtnContainer = ({selectedColor, setSelectedColor, originColors, setOriginColors, score, incrementScore, setFinished}) => {
 
@@ -59,6 +60,7 @@ const BtnContainer = ({selectedColor, setSelectedColor, originColors, setOriginC
 
         if (!selectedColor) {
             clickedColorsArray.pop();
+            bloopAudio.play();
             setSelectedColor(clickedColor);
             setOriginColors(colors);
             incrementScore();
@@ -67,6 +69,7 @@ const BtnContainer = ({selectedColor, setSelectedColor, originColors, setOriginC
 
         if (clickedColorsArray.length < MAX_COUNT.current && (!clickedColor || selectedColor === clickedColor)) {
             clickedColorsArray.push(selectedColor);
+            bloopAudio.play();
             setSelectedColor('');
             setOriginColors(colors);
         }
@@ -74,6 +77,7 @@ const BtnContainer = ({selectedColor, setSelectedColor, originColors, setOriginC
 
     const handleUndo = () => {
         if (score !== 0) {
+            bloopAudio.play();
             setOriginColors(prevOriginColors);
             setSelectedColor(prevSelectedColor);
             incrementScore();
