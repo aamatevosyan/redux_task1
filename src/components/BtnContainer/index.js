@@ -3,9 +3,9 @@ import Btn from "../Btn";
 import {copyArray, generateRenderData, usePrevious} from "../../helpers";
 import BtnWidget from "../BtnWidget";
 import {connect} from "react-redux";
-import {setOriginColors, setSelectedColor, setScore} from "../../actions";
+import {setOriginColors, setSelectedColor, incrementScore} from "../../actions";
 
-const BtnContainer = ({selectedColor, setSelectedColor, originColors, setOriginColors, score, setScore, setFinished}) => {
+const BtnContainer = ({selectedColor, setSelectedColor, originColors, setOriginColors, score, incrementScore, setFinished}) => {
 
     const prevSelectedColor = usePrevious(selectedColor);
     const prevOriginColors = usePrevious(originColors);
@@ -61,7 +61,7 @@ const BtnContainer = ({selectedColor, setSelectedColor, originColors, setOriginC
             clickedColorsArray.pop();
             setSelectedColor(clickedColor);
             setOriginColors(colors);
-            setScore(score + 1);
+            incrementScore();
             return;
         }
 
@@ -76,7 +76,7 @@ const BtnContainer = ({selectedColor, setSelectedColor, originColors, setOriginC
         if (score !== 0) {
             setOriginColors(prevOriginColors);
             setSelectedColor(prevSelectedColor);
-            setScore(score + 1);
+            incrementScore();
         }
     };
 
@@ -113,7 +113,7 @@ const mapDispatchToProps = (dispatch) => {
     return {
         setSelectedColor: (value) => dispatch(setSelectedColor(value)),
         setOriginColors: (value) => dispatch(setOriginColors(value)),
-        setScore: (value) => dispatch(setScore(value))
+        incrementScore: () => dispatch(incrementScore())
     };
 };
 

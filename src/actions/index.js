@@ -1,4 +1,4 @@
-import {SET_FINISHED, SET_ORIGIN_COLORS, SET_SCORE, SET_SELECTED_COLOR} from "./types";
+import {SET_FINISHED, SET_ORIGIN_COLORS, INCREMENT_SCORE, SET_SELECTED_COLOR} from "./types";
 
 export const setFinished = (finished) => {
     return {
@@ -7,10 +7,9 @@ export const setFinished = (finished) => {
     }
 };
 
-export const setScore = (score) => {
+export const incrementScore = () => {
     return {
-        type: SET_SCORE,
-        payload: score
+        type: INCREMENT_SCORE
     }
 };
 
